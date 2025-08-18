@@ -17,6 +17,7 @@
 	wanderer_examine = FALSE
 	advjob_examine = FALSE
 	give_bank_account = 15
+	same_job_respawn_delay = 30 MINUTES
 
 // REMEMBER FLAGELLANT? REMEMBER LASZLO? THIS IS HIM NOW. FEEL OLD YET?
 
