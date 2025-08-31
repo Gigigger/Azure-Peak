@@ -73,23 +73,7 @@
 		if(isliving(mymob))
 			var/mob/living/L = mymob
 			if(L.has_status_effect(/datum/status_effect/buff/druqks))
-				add_filter("druqks_ripple", 2, ripple_filter(0, 50, 1, x = 80))
-				var/filter = get_filter("druqks_ripple")
 				add_filter("druqks_color", 2, color_matrix_filter(list(0,0,1,0, 0,1,0,0, 1,0,0,0, 0,0,0,1, 0,0,0,0)))
-				animate(filter, 1 SECONDS, -1, radius=480, size=50, flags=ANIMATION_PARALLEL)
-//			if(L.has_status_effect(/datum/status_effect/buff/weed))
-//				filters += filter(type="bloom",threshold=rgb(255, 128, 255),size=5,offset=5)
-/*
-/atom/movable/screen/plane_master/byondlight
-	name = "byond lighting master"
-//	screen_loc = "CENTER-2"
-	plane = BYOND_LIGHTING_PLANE
-	appearance_flags = PLANE_MASTER
-
-/atom/movable/screen/plane_master/byondlight/proc/shadowblack()
-	filters = list()
-	filters += filter(type = "drop_shadow", x = 2, y = 2, color = "#04080FAA", size = 5, offset = 5)
-*/
 
 /atom/movable/screen/plane_master/lighting
 	name = "lighting plane master"
@@ -152,10 +136,7 @@
 		if(isliving(mymob))
 			var/mob/living/L = mymob
 			if(L.has_status_effect(/datum/status_effect/buff/druqks))
-				add_filter("druqks_ripple", 2, ripple_filter(0, 50, 1, x = 80))
-				var/filter = get_filter("druqks_ripple")
 				add_filter("druqks_color", 2, color_matrix_filter(list(0,0,1,0, 0,1,0,0, 1,0,0,0, 0,0,0,1, 0,0,0,0)))
-				animate(filter, 1 SECONDS, -1, radius=480, size=50, flags=ANIMATION_PARALLEL)
 	filters += filter(type = "alpha", render_source = FIELD_OF_VISION_BLOCKER_RENDER_TARGET, flags = MASK_INVERSE)
 
 /atom/movable/screen/plane_master/game_world_above
@@ -173,10 +154,7 @@
 		if(isliving(mymob))
 			var/mob/living/L = mymob
 			if(L.has_status_effect(/datum/status_effect/buff/druqks))
-				add_filter("druqks_ripple", 1, ripple_filter(0, 50, 1, x = 80))
-				var/filter = get_filter("druqks_ripple")
 				add_filter("druqks_color", 2, color_matrix_filter(list(0,0,1,0, 0,1,0,0, 1,0,0,0, 0,0,0,1, 0,0,0,0)))
-				animate(filter, 1 SECONDS, -1, radius=480, size=50, flags=ANIMATION_PARALLEL)
 
 /atom/movable/screen/plane_master/game_world_below
 	name = "lowest game world plane master"

@@ -148,6 +148,7 @@ GLOBAL_LIST_INIT(roguetown_areas_typecache, typecacheof(/area/rogue/indoors/town
 	converted_type = /area/rogue/indoors/shelter/rtfield
 	deathsight_message = "somewhere in the wilds, next to towering walls"
 	warden_area = TRUE
+	threat_region = THREAT_REGION_AZURE_BASIN
 
 /area/rogue/indoors/shelter/rtfield
 	icon_state = "rtfield"
@@ -288,7 +289,7 @@ GLOBAL_LIST_INIT(roguetown_areas_typecache, typecacheof(/area/rogue/indoors/town
 	droning_sound_dusk = null
 	droning_sound_night = null
 	converted_type = /area/rogue/outdoors/exposed/decap
-	
+
 /area/rogue/outdoors/exposed/decap
 	icon_state = "decap"
 	droning_sound = 'sound/music/area/decap.ogg'
@@ -326,6 +327,46 @@ GLOBAL_LIST_INIT(roguetown_areas_typecache, typecacheof(/area/rogue/indoors/town
 	first_time_text = "THE LICH"
 
 /area/rogue/under/cave/licharena/bossroom/can_craft_here()
+	return FALSE
+
+/area/rogue/under/cave/his_vault
+	name = "his_vault"
+	icon_state = "under"
+	first_time_text = "HIS VAULT"
+	droning_sound = 'sound/music/area/dragonden.ogg'
+	droning_sound_dusk = null
+	droning_sound_night = null
+	converted_type = /area/rogue/outdoors/dungeon1
+	ceiling_protected = TRUE
+
+/area/rogue/under/cave/his_vault/one
+	first_time_text = "PSLM 89:99"
+
+/area/rogue/under/cave/his_vault/one/can_craft_here()
+	return FALSE
+
+/area/rogue/under/cave/his_vault/two
+	first_time_text = "PSLM 71:6"
+
+/area/rogue/under/cave/his_vault/two/can_craft_here()
+	return FALSE
+
+/area/rogue/under/cave/his_vault/three
+	first_time_text = "PSY 66:2"
+
+/area/rogue/under/cave/his_vault/three/can_craft_here()
+	return FALSE
+
+/area/rogue/under/cave/his_vault/four
+	first_time_text = "PSY 1:4"
+
+/area/rogue/under/cave/his_vault/four/can_craft_here()
+	return FALSE
+
+/area/rogue/under/cave/his_vault/puzzle
+	first_time_text = "NODD 8:14"
+
+/area/rogue/under/cave/his_vault/puzzle/can_craft_here()
 	return FALSE
 
 /area/rogue/under/cave/undeadmanor
@@ -396,6 +437,12 @@ GLOBAL_LIST_INIT(roguetown_areas_typecache, typecacheof(/area/rogue/indoors/town
 	droning_sound = 'sound/music/area/manorgarri.ogg'
 	keep_area = TRUE
 	town_area = TRUE
+
+/area/rogue/outdoors/exposed/town/keep/unbuildable
+	name = "Keep unbuildable"
+
+/area/rogue/outdoors/exposed/town/keep/unbuildable/can_craft_here()
+	return FALSE
 
 /area/rogue/indoors/town/manor
 	name = "Manor"
@@ -555,7 +602,7 @@ GLOBAL_LIST_INIT(roguetown_areas_typecache, typecacheof(/area/rogue/indoors/town
 
 /area/rogue/indoors/inq/basement
 	name = "The Inquisition's Basement"
-	icon_state = "chapel"	
+	icon_state = "chapel"
 
 /area/rogue/indoors/town/warehouse/can_craft_here()
 	return FALSE
@@ -737,6 +784,7 @@ GLOBAL_LIST_INIT(roguetown_areas_typecache, typecacheof(/area/rogue/indoors/town
 	icon_state = "basement"
 	keep_area = TRUE
 	town_area = TRUE
+	ceiling_protected = TRUE
 
 /area/rogue/outdoors/exposed/under/basement
 	icon_state = "basement"

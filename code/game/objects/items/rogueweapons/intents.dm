@@ -26,6 +26,8 @@
 	var/noaa = FALSE //turns off auto aiming, also turns off the 'swooshes'
 	var/warnie = ""
 	var/pointer = 'icons/effects/mousemice/human_attack.dmi'
+	var/charge_pointer = null // Simple unique charge icon
+	var/charged_pointer = null // Simple unique charged icon
 	var/clickcd = CLICK_CD_MELEE //the cd invoked clicking on stuff with this intent
 	var/recovery = 0		//RTD unable to move for this duration after an attack without becoming off balance
 	var/list/charge_invocation //list of stuff to say while charging
@@ -303,6 +305,8 @@
 	chargetime = 0
 	warnie = "aimwarn"
 	warnoffset = 0
+	charge_pointer = 'icons/effects/mousemice/charge/spell_charging.dmi'
+	charged_pointer = 'icons/effects/mousemice/charge/spell_charged.dmi'
 
 /datum/looping_sound/invokegen
 	mid_sounds = list('sound/magic/charging.ogg')
@@ -374,6 +378,7 @@
 	item_d_type = "stab"
 	blade_class = BCLASS_PICK
 	chargetime = 0
+	clickcd = 14 // Just like knife pick!
 	swingdelay = 12
 
 /datum/intent/pick/ranged
@@ -470,6 +475,8 @@
 	intent_intdamage_factor = 0.5
 
 /datum/intent/unarmed/punch/rmb_ranged(atom/target, mob/user)
+	if(user.stat >= UNCONSCIOUS)
+		return
 	if(ismob(target))
 		var/mob/M = target
 		var/list/targetl = list(target)
@@ -512,6 +519,8 @@
 	item_d_type = "blunt"
 
 /datum/intent/unarmed/shove/rmb_ranged(atom/target, mob/user)
+	if(user.stat >= UNCONSCIOUS)
+		return
 	if(ismob(target))
 		var/mob/M = target
 		var/list/targetl = list(target)
@@ -537,6 +546,8 @@
 	item_d_type = "blunt"
 
 /datum/intent/unarmed/grab/rmb_ranged(atom/target, mob/user)
+	if(user.stat >= UNCONSCIOUS)
+		return
 	if(ismob(target))
 		var/mob/M = target
 		var/list/targetl = list(target)
@@ -559,6 +570,8 @@
 	rmb_ranged = TRUE
 
 /datum/intent/unarmed/help/rmb_ranged(atom/target, mob/user)
+	if(user.stat >= UNCONSCIOUS)
+		return
 	if(ismob(target))
 		var/mob/M = target
 		var/list/targetl = list(target)

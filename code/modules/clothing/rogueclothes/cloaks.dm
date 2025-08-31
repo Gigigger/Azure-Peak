@@ -1150,6 +1150,27 @@
 	sellprice = 50
 	nodismemsleeves = TRUE
 
+/obj/item/clothing/cloak/undivided
+	name = "undivided cloak"
+	desc = "The refuge of the TEN upon my back. A Undivided House, standing eternal against the encroaching darkness."
+	icon_state = "seecloak"
+	sleeved = 'icons/roguetown/clothing/onmob/cloaks.dmi'
+	alternate_worn_layer = CLOAK_BEHIND_LAYER
+	slot_flags = ITEM_SLOT_BACK_R|ITEM_SLOT_CLOAK
+
+/obj/item/clothing/cloak/undivided/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/storage/concrete/roguetown/cloak)
+
+/obj/item/clothing/cloak/undivided/dropped(mob/living/carbon/human/user)
+	..()
+	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
+	if(STR)
+		var/list/things = STR.contents()
+		for(var/obj/item/I in things)
+			STR.remove_from_storage(I, get_turf(src))
+
+
 /obj/item/clothing/cloak/half
 	name = "halfcloak"
 	desc = ""
@@ -1874,3 +1895,32 @@
 		alternate_worn_layer = UNDER_ARMOR_LAYER
 	user.update_inv_cloak()
 	user.update_inv_armor()
+
+/obj/item/clothing/cloak/captain
+	name = "captain's cape"
+	desc = "A cape with a gold embroided heraldry of Azure."
+	icon = 'icons/roguetown/clothing/special/captain.dmi'
+	mob_overlay_icon = 'icons/roguetown/clothing/special/onmob/captain.dmi'
+	sleeved = 'icons/roguetown/clothing/special/onmob/captain.dmi'
+	sleevetype = "shirt"
+	icon_state = "capcloak"
+	detail_tag = "_detail"
+	alternate_worn_layer = CLOAK_BEHIND_LAYER
+	detail_color = "#39404d"
+
+/obj/item/clothing/cloak/captain/Initialize()
+	. = ..()
+	if(GLOB.lordprimary)
+		lordcolor(GLOB.lordprimary, GLOB.lordsecondary)
+	GLOB.lordcolor += src
+
+/obj/item/clothing/cloak/tabard/knight/guard/lordcolor(primary,secondary)
+	detail_color = primary
+	update_icon()
+	if(ismob(loc))
+		var/mob/L = loc
+		L.update_inv_cloak()
+
+/obj/item/clothing/cloak/captain/Destroy()
+	GLOB.lordcolor -= src
+	return ..()

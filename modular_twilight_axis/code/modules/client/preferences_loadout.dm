@@ -1,3 +1,19 @@
+// Обрабатывает вещи в списке лодаута игрока и удаляет те, название которых было изменено или они были удалены.
+// Иначе лодаут будет ломаться. Мб это как то адекватнее можно починить, но я хз.
+/datum/preferences/proc/clean_loadout(mob/user)
+	var/list/valid_items = list()
+	var/has_invalid_items = FALSE
+
+	for(var/item_name in selected_loadout_items)
+		if(GLOB.loadout_items_by_name[item_name])
+			valid_items.Add(item_name)
+		else
+			has_invalid_items = TRUE
+
+	if(has_invalid_items)
+		selected_loadout_items = valid_items
+		to_chat(user, "Твой лодаут был очищен из-за изменений в предметах.")
+
 /// Обрабатывает размер лодаута и сбрасывает его, если превышает лимит
 /datum/preferences/proc/handle_loadout_size(mob/user)
 	if(selected_loadout_items.len <= get_loadout_size(user))

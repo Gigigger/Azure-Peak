@@ -72,5 +72,6 @@
 		var/list/embeds = departing_mob.get_embedded_objects()
 		for(var/thing in embeds)
 			QDEL_NULL(thing)
+	departing_mob.returntolobby()
 	QDEL_NULL(departing_mob)
 
