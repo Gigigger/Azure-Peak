@@ -1,10 +1,21 @@
 /datum/outfit/job/roguetown/puritan/inspector/pre_equip(mob/living/carbon/human/H)
 	. = ..()
 	H.adjust_skillrank(/datum/skill/combat/twilight_firearms, 3, TRUE)
-	belt = /obj/item/storage/belt/rogue/leather/twilight_holsterbelt/runelock
-	beltr = /obj/item/quiver/twilight_bullet/runed
-	backl = null
 
+/datum/outfit/job/roguetown/puritan/inspector/choose_loadout(mob/living/carbon/human/H)
+	. = ..()
+	var/ranged_weapons = list("Runelock (powderless pistol)", "Slurbow + Throwing Knives", "Crossbow + Throwing Knives")
+	var/ranged_choice = input(H,"Choose your ranged weapon.", "TAKE UP PSYDON'S ARMS") as anything in weapons
+	switch(ranged_choice)
+		if("Runelock (powderless pistol)")
+			belt = /obj/item/storage/belt/rogue/leather/twilight_holsterbelt/runelock
+			beltr = /obj/item/quiver/twilight_bullet/runed
+			backl = null
+		if("Slurbow + Throwing Knives")
+			backl = /obj/item/gun/ballistic/revolver/grenadelauncher/crossbow/slurbow
+		if("Crossbow + Throwing Knives")
+		
+			
 /datum/advclass/puritan/blackpowder
 	name = "Black Vanguard"
 	tutorial = "A truly rare specimen among the ranks of the Inquisition - an agent of the Black Powder Order now serving as an Ordinator, hunting down Psydon's many enemies, set upon this task by Marshal Inquisitionis himself. There are many mistakes a heretic can commit over their lifespan, but when facing a Black Vanguard, their final error tends to be the fact that they brought a sword to a gunfight."
