@@ -275,6 +275,11 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	if(user.has_status_effect(/datum/status_effect/debuff/ritesexpended))
 		to_chat(user,span_smallred("I have performed enough rituals for the day... I must rest before communing more."))
 		return
+	var/time_elapsed = STATION_TIME_PASSED() / (1 MINUTES)
+	if(time_elapsed < 30)
+		var/time_left = 30 - time_elapsed
+		to_chat(user, span_smallred("The veil is too thin for this rite. Wait another [round(time_left, 0.1)] minutes."))
+		return
 	var/riteselection = input(user, "Rite of the Tidal Spire", src) as null|anything in stirringrites
 	switch(riteselection)
 		if("Rite of the Crystal Spire")
@@ -327,6 +332,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	var/effect_desc = " Use in-hand to mark a location, then activate it to break the barrier between the dream and this realm where you put a mark down earlier. You recall the teachings of your Hierophant... these things are dangerous to all."
 	var/obj/rune_type = /obj/structure/active_abyssor_rune
 	var/faith_locked = TRUE
+	var/obj/upgraded_rune_type = /obj/structure/active_abyssor_rune/greater
 
 /obj/item/abyssal_marker/volatile
 	name = "volatile abyssal marker"
@@ -342,6 +348,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	icon_state = "abyssal_marker_tidal"
 	effect_desc = " Use in-hand to mark a location, then activate it to break the barrier between the dream and this realm where you put a mark down earlier. This one calls forth the tidal waters of the abyss."
 	rune_type = /obj/structure/active_abyssor_rune/tidal
+	upgraded_rune_type = null
 
 /obj/item/abyssal_marker/volatile/Initialize()
 	. = ..()
@@ -361,8 +368,8 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 		visible_message(span_warning("[src] shatters on impact!"))
 		playsound(src, 'sound/magic/lightning.ogg', 50, TRUE)
 		var/mob/thrower = throwingdatum?.thrower
-		if(thrower && HAS_TRAIT(thrower, TRAIT_HERESIARCH))
-			rune_type = /obj/structure/active_abyssor_rune/greater
+		if(thrower && HAS_TRAIT(thrower, TRAIT_HERESIARCH) && upgraded_rune_type)
+			rune_type = upgraded_rune_type
 		new rune_type(T)
 		qdel(src)
 	else
@@ -382,8 +389,8 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 			to_chat(user, span_warning("My connection to Abyssor's dream is too weak to invoke his power with this crystal."))
 			return ..()
 		//Heretics get FAR stronger spires!
-		if(HAS_TRAIT(user, TRAIT_HERESIARCH))
-			rune_type = /obj/structure/active_abyssor_rune/greater
+		if(HAS_TRAIT(user, TRAIT_HERESIARCH) && upgraded_rune_type)
+			rune_type = upgraded_rune_type
 	if(do_after(user, 2 SECONDS) && !marked_location)
 		marked_location = get_turf(user)
 		to_chat(user, span_notice("You charge the crystal with the essence of this location."))
@@ -461,7 +468,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 	initial_fiend = /mob/living/simple_animal/hostile/rogue/dreamfiend/ancient/unbound
 	max_integrity = 1000
 	max_radius = 5
-	max_fiends = 10
+	max_fiends = 7
 
 /obj/structure/crystal_spire/tidal
 	name = "tidal spire"
@@ -520,7 +527,7 @@ var/forgerites = list("Ritual of Blessed Reforgance")
 
 	var/list/witnesses = view(7, src)
 	for(var/mob/living/carbon/human/H in witnesses)
-		teleport_to_dream(H, 0.1)
+		teleport_to_dream(H, 1000, 1)
 
 	return ..()
 

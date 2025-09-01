@@ -13,6 +13,7 @@
 #define CLERIC_REQ_4 1000
 
 #define CLERIC_REGEN_DEVOTEE 0.3
+#define CLERIC_REGEN_WEAK 0.1 //Would be better to just do away with devotion entirely, but oh well.
 #define CLERIC_REGEN_MINOR 0.5
 #define CLERIC_REGEN_MAJOR 0.8
 #define CLERIC_REGEN_ABSOLVER 5
@@ -231,3 +232,13 @@
 		add_client_colour(/datum/client_colour/monochrome)
 	else
 		remove_client_colour(/datum/client_colour/monochrome)
+
+/mob/living/carbon/human/proc/togglecombatawareness()
+	set name = "Toggle Combat Awareness"
+	set category = "Virtue"
+
+	if(HAS_TRAIT(src, TRAIT_COMBAT_AWARE))
+		REMOVE_TRAIT(src, TRAIT_COMBAT_AWARE, TRAIT_VIRTUE) 
+	else
+		ADD_TRAIT(src, TRAIT_COMBAT_AWARE, TRAIT_VIRTUE)
+	to_chat(src, "I will see [HAS_TRAIT(src, TRAIT_COMBAT_AWARE) ? "more" : "less"] combat information now.")
