@@ -4,8 +4,8 @@
 
 /datum/outfit/job/roguetown/puritan/inspector/choose_loadout(mob/living/carbon/human/H)
 	. = ..()
-	var/ranged_weapons = list("Runelock (powderless pistol)", "Slurbow + Throwing Knives", "Crossbow + Throwing Knives")
-	var/ranged_choice = input(H,"Choose your ranged weapon.", "TAKE UP PSYDON'S ARMS") as anything in ranged_weapons
+	var/ranged = list("Runelock (powderless pistol)", "Slurbow + Throwing Knives", "Crossbow + Throwing Knives")
+	var/ranged_choice = input(H,"Choose your ranged weapon.", "TAKE UP PSYDON'S ARMS") as anything in ranged
 	switch(ranged_choice)
 		if("Runelock (powderless pistol)")
 			belt = /obj/item/storage/belt/rogue/leather/twilight_holsterbelt/runelock
