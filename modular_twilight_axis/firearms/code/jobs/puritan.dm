@@ -14,7 +14,7 @@
 		if("Slurbow + Throwing Knives")
 			backl = /obj/item/gun/ballistic/revolver/grenadelauncher/crossbow/slurbow
 		if("Crossbow + Throwing Knives")
-		
+			backl = /obj/item/gun/ballistic/revolver/grenadelauncher/crossbow
 			
 /datum/advclass/puritan/blackpowder
 	name = "Black Vanguard"
