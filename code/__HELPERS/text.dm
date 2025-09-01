@@ -9,6 +9,33 @@
  */
 
 
+/// Standard maptext
+/// Prepares a text to be used for maptext. Use this so it doesn't look hideous.
+#define MAPTEXT(text) {"<span class='maptext'>[##text]</span>"}
+
+
+/**
+ * Pixel-perfect scaled fonts for use in the MAP element as defined in skin.dmf
+ *
+ * Four sizes to choose from, use the sizes as mentioned below.
+ * Between the variations and a step there should be an option that fits your use case.
+ * BYOND uses pt sizing, different than px used in TGUI. Using px will make it look blurry due to poor antialiasing.
+ *
+ * Default sizes are prefilled in the macro for ease of use and a consistent visual look.
+ * To use a step other than the default in the macro, specify it in a span style.
+ * For example: MAPTEXT_PIXELLARI("<span style='font-size: 24pt'>Some large maptext here</span>")
+ */
+/// Large size (ie: context tooltips) - Size options: 12pt 24pt.
+#define MAPTEXT_PIXELLARI(text) {"<span style='font-family: \"Pixellari\"; font-size: 12pt; -dm-text-outline: 1px black'>[##text]</span>"}
+
+/// Standard size (ie: normal runechat) - Size options: 6pt 12pt 18pt.
+#define MAPTEXT_GRAND9K(text) {"<span style='font-family: \"Grand9K Pixel\"; font-size: 6pt; -dm-text-outline: 1px black'>[##text]</span>"}
+
+/// Small size. (ie: context subtooltips, spell delays) - Size options: 12pt 24pt.
+#define MAPTEXT_TINY_UNICODE(text) {"<span style='font-family: \"TinyUnicode\"; font-size: 12pt; line-height: 0.75; -dm-text-outline: 1px black'>[##text]</span>"}
+
+/// Smallest size. (ie: whisper runechat) - Size options: 6pt 12pt 18pt.
+#define MAPTEXT_SPESSFONT(text) {"<span style='font-family: \"Spess Font\"; font-size: 6pt; line-height: 1.4; -dm-text-outline: 1px black'>[##text]</span>"}
 
 /proc/format_table_name(table as text)
 	return CONFIG_GET(string/feedback_tableprefix) + table
@@ -18,15 +45,29 @@
  */
 
 //Simply removes < and > and limits the length of the message
-/proc/strip_html_simple(t,limit=MAX_MESSAGE_LEN)
+/proc/strip_html_simple(t, limit=MAX_MESSAGE_LEN)
+	if(!t || !istext(t))
+		return ""
+
+	t = copytext_char(t, 1, limit)
 	var/list/strip_chars = list("<",">")
-	t = copytext(t,1,limit)
+	var/list/text_parts = list()
+	var/last_pos = 1
+	
 	for(var/char in strip_chars)
-		var/index = findtext(t, char)
+		var/index = findtext(t, char, last_pos)
 		while(index)
-			t = copytext(t, 1, index) + copytext(t, index+1)
-			index = findtext(t, char)
-	return t
+			// Add the text before this character
+			if(index > last_pos)
+				text_parts += copytext_char(t, last_pos, index)
+			last_pos = index + 1
+			index = findtext(t, char, last_pos)
+
+	// Add any remaining text after the last stripped character
+	if(last_pos <= length(t))
+		text_parts += copytext_char(t, last_pos)
+		
+	return jointext(text_parts, "")
 
 
 // Removes punctuation
@@ -283,7 +324,7 @@
 
 //Returns a string with the first element of the string capitalized.
 /proc/capitalize(t as text)
-	return uppertext(copytext(t, 1, 2)) + copytext(t, 2)
+	return uppertext(copytext_char(t, 1, 2)) + copytext_char(t, 2)
 
 //Centers text by adding spaces to either side of the string.
 /proc/dd_centertext(message, length)

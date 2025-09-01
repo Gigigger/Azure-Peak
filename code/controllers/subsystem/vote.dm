@@ -12,6 +12,8 @@ SUBSYSTEM_DEF(vote)
 	var/custom_vote_period = 0
 	var/mode = null
 	var/question = null
+	var/vote_height = 400
+	var/vote_width = 400
 	var/list/choices = list()
 	var/list/voted = list()
 	var/list/voting = list()
@@ -25,13 +27,15 @@ SUBSYSTEM_DEF(vote)
 		if(time_remaining < 0)
 			result()
 			for(var/client/C in voting)
-				C << browse(null, "window=vote;can_close=0")
+				C << browse(null, "window=vote;can_close=0;size=[vote_width]x[vote_height]")
 			reset()
 		else
 			var/datum/browser/noclose/client_popup
 			for(var/client/C in voting)
-				client_popup = new(C, "vote", "Voting Panel")
+				client_popup = new(C, "vote", "Voting Panel", nwidth = vote_width, nheight = vote_height)
 				client_popup.set_window_options("can_close=0")
+				client_popup.width = vote_width
+				client_popup.height = vote_height
 				client_popup.set_content(interface(C))
 				client_popup.open(FALSE)
 
@@ -40,6 +44,8 @@ SUBSYSTEM_DEF(vote)
 	initiator = null
 	time_remaining = 0
 	custom_vote_period = 0
+	vote_width = initial(vote_width)
+	vote_height = initial(vote_height)
 	mode = null
 	question = null
 	choices.Cut()
@@ -155,7 +161,8 @@ SUBSYSTEM_DEF(vote)
 					log_game("LOG VOTE: ROUNDVOTEEND [REALTIMEOFDAY]")
 					to_chat(world, "\n<font color='purple'>[ROUND_END_TIME_VERBAL]</font>")
 					SSgamemode.roundvoteend = TRUE
-					SSgamemode.round_ends_at = GLOB.round_timer + ROUND_END_TIME
+					SSgamemode.round_ends_at = (world.time - SSticker.round_start_time) + ROUND_END_TIME
+					world.TgsAnnounceVoteEndRound()
 			if("storyteller")
 				SSgamemode.storyteller_vote_result(.)
 
@@ -259,6 +266,7 @@ SUBSYSTEM_DEF(vote)
 				vote_alert.file = 'sound/roundend/roundend-vote-sound.ogg'
 			if("storyteller")
 				choices.Add(SSgamemode.storyteller_vote_choices())
+				vote_height = 800 // Give more room for storyteller
 			else
 				return 0
 		mode = vote_type
@@ -292,7 +300,7 @@ SUBSYSTEM_DEF(vote)
 		return 1
 	return 0
 
-// Helper for sending an active vote to someone who has just logged in 
+// Helper for sending an active vote to someone who has just logged in
 /datum/controller/subsystem/vote/proc/send_vote(client/C)
 	if(!mode || !C)
 		return
@@ -421,6 +429,8 @@ SUBSYSTEM_DEF(vote)
 	set name = "Vote"
 	var/datum/browser/noclose/popup = new(src, "vote", "Voting Panel")
 	popup.set_window_options("can_close=0")
+	popup.width = SSvote.vote_width
+	popup.height = SSvote.vote_height
 	popup.set_content(SSvote.interface(client))
 	popup.open(FALSE)
 

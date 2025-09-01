@@ -140,7 +140,7 @@
 		SSroguemachine.key = src
 
 /obj/item/roguekey/lord/proc/anti_stall()
-	src.visible_message(span_warning("The Key of Azure Peak crumbles to dust, the ashes spiriting away in the direction of the Keep."))
+	src.visible_message(span_warning("The Key of Twilight Axis crumbles to dust, the ashes spiriting away in the direction of the Keep."))
 	SSroguemachine.key = null //Do not harddel.
 	qdel(src) //Anti-stall
 
@@ -263,11 +263,11 @@
 	icon_state = "greenkey"
 	lockid = "innkeep"
 
-/obj/item/roguekey/velder
-	name = "elder's key"
-	desc = "This key should open and close the elder's home."
-	icon_state = "brownkey"
-	lockid = "velder"
+/obj/item/roguekey/crier
+	name = "crier's key"
+	desc = "This key should open and close the crier's office."
+	icon_state = "cheesekey"
+	lockid = "crier"
 
 /obj/item/roguekey/tavern/village
 	lockid = "vtavern"

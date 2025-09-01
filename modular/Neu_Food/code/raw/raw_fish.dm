@@ -143,7 +143,7 @@
 
 /obj/item/reagent_containers/food/snacks/fish/clownfish
 	name = "clownfish"
-	desc = "This fish brings vibrant hues to the dark world of Azure Peak."
+	desc = "This fish brings vibrant hues to the dark world of Twilight Axis."
 	icon_state = "clownfish"
 	faretype = FARE_NEUTRAL
 	sellprice = 40
@@ -198,7 +198,7 @@
 
 /obj/item/reagent_containers/food/snacks/fish/creepy_eel/pickup(mob/living/user)
 	if(!was_i_picked_up && ishuman(user))
-		teleport_to_dream(user, 100)
+		teleport_to_dream(user, 1, 1)
 		was_i_picked_up = TRUE
 		desc = "A slimy eel, you feel a strange mundanity looking at it... You're assured there's nothing weird about it whatsoever. It might as well be the most average thing in the realm."
 	..()
